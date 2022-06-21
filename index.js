@@ -28,6 +28,13 @@ async function run(){
            
        })
 
+       //menu ites server to clict
+       app.get('/menuItem',async (req,res)=>{
+         const cuusor = menudata.find({})
+         const menus = await cuusor.toArray()
+         res.json(menus)
+       })
+        // Menu item clint to server
        app.post('/menuItem', async(req, res) =>{
     
         const name = req.body.name;
