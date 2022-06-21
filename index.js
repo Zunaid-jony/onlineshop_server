@@ -20,18 +20,33 @@ async function run(){
        await client.connect();
        console.log('database connected successfully')
        const database = client.db('online_shop');
-       const menudatabase = client.db('menuItem');
-
        const itemCollection = database.collection('item_product');
+
+       const menudatabase = client.db('menuItems');
+       const menudata = menudatabase.collection('menu')
        app.post('/items',async (req, res)=>{
            
        })
 
        app.post('/menuItem', async(req, res) =>{
     
-         console.log('body', req.body)
-         console.log('files',req.files)
-         res.json({success: true})
+        const name = req.body.name;
+        const itemId = req.body.itemId;
+        const id = req.body.id;
+        const imgSrc = req.files.imgSrc;
+        const picData = imgSrc.data;
+
+        const encodedPic = picData.toString('base64');
+        const imgeBuffer = Buffer.from(encodedPic,'base64')
+
+        const menu ={
+          name,
+          itemId,
+          id,
+          imgSrc: imgeBuffer
+        }
+        const result = await  menudata.insertOne(menu)
+         res.json(result)
 
        })
     }
