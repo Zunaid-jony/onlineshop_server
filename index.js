@@ -24,9 +24,47 @@ async function run(){
 
        const menudatabase = client.db('menuItems');
        const menudata = menudatabase.collection('menu')
+       const items = menudatabase.collection('items')
+
+
        app.post('/items',async (req, res)=>{
            
        })
+      //  menus get 
+      app.get('/menu',async (req,res)=>{
+        const cuusor = items.find({})
+        const men = await cuusor.toArray()
+        res.json(men)
+      })
+       //menus ites  post
+       app.post('/menu', async(req, res) =>{
+    
+        const name = req.body.name;
+        const itemId = req.body.itemId;
+        const id = req.body.id;
+        const price = req.body.price;
+        const ratings = req.body.ratings;
+
+        const imgSrc = req.files.imgSrc;
+        const picData = imgSrc.data;
+
+        const encodedPic = picData.toString('base64');
+        const imgeBuffer = Buffer.from(encodedPic,'base64')
+
+        const menu ={
+          name,
+          itemId,
+          id,
+          ratings,
+          price,
+          imgSrc: imgeBuffer
+        }
+        const result = await  items.insertOne(menu)
+         res.json(result)
+
+       })
+
+
 
        //menu ites server to clict
        app.get('/menuItem',async (req,res)=>{
